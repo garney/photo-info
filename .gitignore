@@ -3,3 +3,6 @@ node_modules
 .idea/shelf/
 .idea/workspace.xml
 .cache
+
+photoUpload/*
+photoUpload/data.json

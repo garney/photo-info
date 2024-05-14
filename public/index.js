@@ -55383,7 +55383,7 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  display: flex;\n  margin: '10px';\n"]);
+  var data = _taggedTemplateLiteral(["\n  display: flex;\n  margin: '10px';\n  background-color: #fff;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n  text-align: center;\n  font-size: 20px;\n  padding: 10px;\n  margin: 10px;\n  box-sizing: border-box;\n  max-width: 800px;\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -55442,8 +55442,9 @@ var PhotoUpload = function PhotoUpload(_ref) {
     if (socket.id) {
       console.log('🪵 ~ file: photo-upload.js:15 ~ useEffect ~ socket.id:', socket.id);
       socket.connection.emit('getImages');
-      socket.connection.on('updateImageList', function (list) {
-        setImageList(list);
+      socket.connection.on('updateImageList', function (data) {
+        // debugger;
+        setImageList(data === null || data === void 0 ? void 0 : data.images);
       });
     }
   }, [socket.id]);
@@ -55471,12 +55472,12 @@ var PhotoUpload = function PhotoUpload(_ref) {
                       case 0:
                         extension = file.name.split('.').pop(); // const imageBuffer = Buffer.from(reader.result.split(',')[1], 'base64');
 
-                        arrayBuffer = reader.result;
-                        debugger;
-                        _context.next = 5;
+                        arrayBuffer = reader.result; // debugger;
+
+                        _context.next = 4;
                         return (0, _fujiExif.updateImageDisplay)(inputTarget);
 
-                      case 5:
+                      case 4:
                         exif = _context.sent;
                         // const exif = {};
                         // const tagSet  = handleBinaryFile(0, arrayBuffer);
@@ -55484,7 +55485,7 @@ var PhotoUpload = function PhotoUpload(_ref) {
                         console.log('🪵 ~ file: photo-upload.js:38 ~ handleFileChange ~ dataTemp:', exif);
                         socket.connection.emit('uploadPhoto', file.name, arrayBuffer, extension, exif, onPhotoUploaded);
 
-                      case 8:
+                      case 7:
                       case "end":
                         return _context.stop();
                     }
@@ -55515,7 +55516,17 @@ var PhotoUpload = function PhotoUpload(_ref) {
     name: "image_uploads",
     accept: "image/jpeg,image/heif,.HIF,.RAF",
     onChange: handleFileChange
-  }), /*#__PURE__*/_react.default.createElement(ImageContainer, null));
+  }), /*#__PURE__*/_react.default.createElement(ImageContainer, null, imageList === null || imageList === void 0 ? void 0 : imageList.map(function (item) {
+    return /*#__PURE__*/_react.default.createElement(ImageDiv, {
+      key: item.id
+    }, /*#__PURE__*/_react.default.createElement("a", {
+      href: item.url,
+      target: "_blank"
+    }, /*#__PURE__*/_react.default.createElement("img", {
+      alt: item.id,
+      src: item.thumbnail
+    })));
+  })));
 };
 
 var _default = PhotoUpload;
@@ -55789,7 +55800,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55786" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54676" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

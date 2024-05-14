@@ -14,6 +14,14 @@ const ImageContainer = styled.div`
 const ImageDiv = styled.div`
   display: flex;
   margin: '10px';
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+  margin: 10px;
+  box-sizing: border-box;
+  max-width: 800px;
 `;
 
 const PhotoUpload = ({socket = {}}) => {
@@ -28,8 +36,9 @@ const PhotoUpload = ({socket = {}}) => {
     if (socket.id) {
         console.log('🪵 ~ file: photo-upload.js:15 ~ useEffect ~ socket.id:', socket.id);
         socket.connection.emit('getImages');
-        socket.connection.on('updateImageList', (list) => {
-            setImageList(list);
+        socket.connection.on('updateImageList', (data) => {
+            // debugger;
+            setImageList(data?.images);
         });
     }
 }, [socket.id]);
@@ -50,7 +59,7 @@ const PhotoUpload = ({socket = {}}) => {
       const extension = file.name.split('.').pop();
       // const imageBuffer = Buffer.from(reader.result.split(',')[1], 'base64');
       const arrayBuffer = reader.result;
-      debugger;
+      // debugger;
       const exif = await updateImageDisplay(inputTarget);
       // const exif = {};
       // const tagSet  = handleBinaryFile(0, arrayBuffer);
@@ -67,13 +76,16 @@ const PhotoUpload = ({socket = {}}) => {
       <h1>Hello {title}</h1>
       <input type="file" id="image_uploads" name="image_uploads" accept="image/jpeg,image/heif,.HIF,.RAF" onChange={handleFileChange} ></input>
       <ImageContainer>
-        {/* {
-          imageList.map((item) => {
+        {
+          imageList?.map((item) => {
             return <ImageDiv key={item.id}>
-              <img alt={item.id} src={item.thumbnail}/>
+              <a href={item.url} target="_blank" >
+                <img alt={item.id} src={item.thumbnail}/>
+              </a>
+              
             </ImageDiv>;
         })
-        } */}
+        }
 
       </ImageContainer>
 
