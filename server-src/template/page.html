@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Photo Details</title>
+    <style>
+        .polaroid {
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+            box-sizing: border-box;
+            max-width: 800px;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+        }
+
+        .details {
+            text-align: left;
+            font-size: 16px;
+            padding: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .details b {
+            font-size: 18px;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: content-box;
+            flex-direction: column;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let filmSim = ['sensor', 'iso', 'expcomp', 'filmsimulation', 'graineffect', 'grainsize', 'colorchrome', 'colorchromefx', 'clarity', 'whitebalance', 'wbcustom', 'whitebalanceft', 'dynamicrange', 'highlight', 'shadow', 'color', 'sharpness', 'noisereduction'];
+        let fujiList = ['make', 'model', 'sensor', 'shuttercount', 'shutterspeed', 'aperture', 'iso', 'expcomp', 'focallength', 'timestamp', 'blurwarning', 'focuswarning', 'exposurewarning', 'filmsimulation', 'graineffect', 'grainsize', 'colorchrome', 'colorchromefx', 'clarity', 'whitebalance', 'wbcustom', 'whitebalanceft', 'dynamicrange', 'highlight', 'shadow', 'color', 'sharpness', 'noisereduction', 'flash', 'flashmode', 'flashcomp'];
+        let clean = ['aftext', 'make', 'model', 'sensor', 'shuttercount', 'shutterspeed', 'aperture', 'iso', 'expcomp', 'focallength', 'timestamp', 'blurwarning', 'focuswarning', 'exposurewarning', 'filmsimulation', 'graineffect', 'grainsize', 'colorchrome', 'colorchromefx', 'clarity', 'whitebalance', 'wbcustom', 'whitebalanceft', 'dynamicrange', 'highlight', 'shadow', 'color', 'sharpness', 'noisereduction', 'flash', 'flashmode', 'flashcomp'];
+        let inclusionList = null;
+        let exifInfo;
+        function loadJson(filter) {
+            const details = document.getElementById('details');
+            details.innerHTML = '';
+            fetch('./exif.json').then(async (res) => {
+                console.log('🪵 ~ file: index.html:40 ~ fetch ~ res:', res);
+                const data = await res.json();
+                exifInfo = data;
+                console.log('🪵 ~ file: index.html:42 ~ fetch ~ data:', data);
+                for (const key in data) {
+                    if(!filter || filter.includes(key)) {
+                        const div = document.createElement('div');
+                        const b = document.createElement('b');
+                        b.textContent = `${key}: `;
+                        div.appendChild(b);
+                        div.appendChild(document.createTextNode(data[key]));
+                        details.appendChild(div);
+                    } 
+                }
+            })
+        }
+
+        function removeExtension(file) {
+            return file.split('.').slice(0, -1).join('.');
+        }
+        function takeScreenshot() {
+            html2canvas(document.querySelector(".polaroid")).then(screenshot => {
+                let imgData = screenshot.toDataURL('image/png');
+                let link = document.createElement('a');
+                link.href = imgData;
+                link.download = (exifInfo.filename? removeExtension(exifInfo.filename ) : 'screenshot' )+ '.png' ;
+                link.click();
+            });
+        }
+
+        // function takeScreenshot() {
+        //     html2canvas(document.querySelector(".polaroid")).then(screenshot => {
+        //         let imgData = canvas.toDataURL('image/png');
+        //         let link = document.createElement('a');
+        //         link.href = imgData;
+        //         link.download = 'screenshot.png';
+        //         link.click();
+        //     });
+        // }
+
+        function requestFullscreen() {
+            let polaroid = document.querySelector('.polaroid');
+            polaroid.style.maxWidth = 'none';
+        }
+        function exitFullscreen() {
+            let polaroid = document.querySelector('.polaroid');
+            polaroid.style.maxWidth = '800px';
+        }
+
+        function onExifFilterChange(value) {
+            switch(value) {
+                case 'all': 
+                    inclusionList = null;
+                    break;
+                case 'clean': 
+                    inclusionList = clean.map(item=>item);
+                    break;   
+                case 'fuji': 
+                    inclusionList = fujiList.map(item=>item);
+                    break;   
+                case 'fuji_sims': 
+                    inclusionList = filmSim.map(item=>item);
+                    break;   
+            }
+            loadJson(inclusionList);
+        }
+    
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            loadJson();
+            document.getElementById('fullscreen').addEventListener('change', function () {
+                if (this.checked) {
+                    // document.documentElement.requestFullscreen();
+                    requestFullscreen();
+                } else {
+                    // document.exitFullscreen();
+                    exitFullscreen();
+                }
+            });
+
+            document.getElementById('filter').addEventListener('change', function () {
+                const filter = this.value;
+                onExifFilterChange(filter);
+            });
+
+            document.querySelector('#btnSave').addEventListener('click', takeScreenshot)
+        });
+        // window.onload(() => {
+        //     loadJson();
+        // })
+    </script>
+</head>
+
+<body>
+    <main>
+        <div class="controls">
+            <input type="checkbox" id="fullscreen" name="fullscreen">
+            <label for="fullscreen">Full Screen</label>
+            <select id="filter" name="filter">
+                <option value="all">All</option>
+                <option value="clean">Clean</option>
+                <option value="fuji">Fuji Info</option>
+                <option value="fuji_sims">Fuji Sims</option>
+            </select>
+            <button id="btnSave">Save</button>
+        </div>
+        <div class="polaroid">
+            <img src="image.JPG" alt="Image">
+            <div class="details" id="details">
+
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
