@@ -33,6 +33,7 @@
     "path": "^0.12.7",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-router-lite": "^1.4.0",
     "request": "^2.88.0",
     "sharp": "^0.33.3",
     "shortid": "^2.2.14",

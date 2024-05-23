@@ -3,6 +3,7 @@ import './photo-upload.scss';
 import { updateImageDisplay } from '../../../helpers/fuji-exif';
 import styled from 'styled-components';
 
+
 const Main = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,10 +22,22 @@ const ImageDiv = styled.div`
   padding: 10px;
   margin: 10px;
   box-sizing: border-box;
-  max-width: 800px;
+  /* max-width: 800px; */
+
+  @media (max-width: 768px) {
+    width: 100%;
+
+    a {
+      width: 100%;
+      img {
+        width: 100%;
+      }
+    }
+  }
+
 `;
 
-const PhotoUpload = ({socket = {}}) => {
+const PhotoUpload = ({socket = {}, upload}) => {
   // const socket = useSocket();
   const [title, setTitle] = useState('');
   const [imageList, setImageList] = useState([]);
@@ -73,8 +86,11 @@ const PhotoUpload = ({socket = {}}) => {
 
   return (
     <Main className="photo-upload">
-      <h1>Hello {title}</h1>
-      <input type="file" id="image_uploads" name="image_uploads" accept="image/jpeg,image/heif,.HIF,.RAF" onChange={handleFileChange} ></input>
+      <h1>{upload ? 'Upload Photos' : 'Photos'}</h1>
+      {
+        upload && <input type="file" id="image_uploads" name="image_uploads" accept="image/jpeg,image/heif,.HIF,.RAF" onChange={handleFileChange} ></input>
+      }
+      
       <ImageContainer>
         {
           imageList?.map((item) => {

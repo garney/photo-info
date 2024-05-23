@@ -1,6 +1,45 @@
 {
    "lastUpdated": "2024-05-02T22:40:17.132Z",
    "images": [
-      
+      {
+         "filePath": "/Users/garneyandres/Projects/photo-info/photoUpload/ba94911d-f358-4702-af67-2971c85cb6de/image.JPG",
+         "exifPath": "/Users/garneyandres/Projects/photo-info/photoUpload/ba94911d-f358-4702-af67-2971c85cb6de/exif.json",
+         "thumbnail": "/ba94911d-f358-4702-af67-2971c85cb6de/image_thumb.JPG",
+         "imageUrl": "/ba94911d-f358-4702-af67-2971c85cb6de/image.JPG",
+         "url": "/ba94911d-f358-4702-af67-2971c85cb6de/index.html",
+         "id": "ba94911d-f358-4702-af67-2971c85cb6de"
+      },
+      {
+         "filePath": "/Users/garneyandres/Projects/photo-info/photoUpload/2eee7870-c76b-4ba5-a216-a14bf6b0fb9b/image.JPG",
+         "exifPath": "/Users/garneyandres/Projects/photo-info/photoUpload/2eee7870-c76b-4ba5-a216-a14bf6b0fb9b/exif.json",
+         "thumbnail": "/2eee7870-c76b-4ba5-a216-a14bf6b0fb9b/image_thumb.JPG",
+         "imageUrl": "/2eee7870-c76b-4ba5-a216-a14bf6b0fb9b/image.JPG",
+         "url": "/2eee7870-c76b-4ba5-a216-a14bf6b0fb9b/index.html",
+         "id": "2eee7870-c76b-4ba5-a216-a14bf6b0fb9b"
+      },
+      {
+         "filePath": "/Users/garneyandres/Projects/photo-info/photoUpload/e3856023-7b94-47b1-9dba-4b8bc5f83869/image.JPG",
+         "exifPath": "/Users/garneyandres/Projects/photo-info/photoUpload/e3856023-7b94-47b1-9dba-4b8bc5f83869/exif.json",
+         "thumbnail": "/e3856023-7b94-47b1-9dba-4b8bc5f83869/image_thumb.JPG",
+         "imageUrl": "/e3856023-7b94-47b1-9dba-4b8bc5f83869/image.JPG",
+         "url": "/e3856023-7b94-47b1-9dba-4b8bc5f83869/index.html",
+         "id": "e3856023-7b94-47b1-9dba-4b8bc5f83869"
+      },
+      {
+         "filePath": "/Users/garneyandres/Projects/photo-info/photoUpload/b5ed360e-286a-4c5a-a099-2d9e933cbfe8/image.JPG",
+         "exifPath": "/Users/garneyandres/Projects/photo-info/photoUpload/b5ed360e-286a-4c5a-a099-2d9e933cbfe8/exif.json",
+         "thumbnail": "/b5ed360e-286a-4c5a-a099-2d9e933cbfe8/image_thumb.JPG",
+         "imageUrl": "/b5ed360e-286a-4c5a-a099-2d9e933cbfe8/image.JPG",
+         "url": "/b5ed360e-286a-4c5a-a099-2d9e933cbfe8/index.html",
+         "id": "b5ed360e-286a-4c5a-a099-2d9e933cbfe8"
+      },
+      {
+         "filePath": "/Users/garneyandres/Projects/photo-info/photoUpload/daafdb11-a35a-42cb-8d5b-c309786588f4/image.JPG",
+         "exifPath": "/Users/garneyandres/Projects/photo-info/photoUpload/daafdb11-a35a-42cb-8d5b-c309786588f4/exif.json",
+         "thumbnail": "/daafdb11-a35a-42cb-8d5b-c309786588f4/image_thumb.JPG",
+         "imageUrl": "/daafdb11-a35a-42cb-8d5b-c309786588f4/image.JPG",
+         "url": "/daafdb11-a35a-42cb-8d5b-c309786588f4/index.html",
+         "id": "daafdb11-a35a-42cb-8d5b-c309786588f4"
+      }
    ]
 }

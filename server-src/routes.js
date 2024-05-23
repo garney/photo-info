@@ -28,6 +28,7 @@ export default class Routes {
       .set('views', path.join(__dirname, './views'))
       .set('view engine', 'ejs')
       .get('/', Routes.loadIndex)
+      .get('/*', Routes.loadIndex)
     ;
   }
 

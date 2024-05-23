@@ -55383,7 +55383,7 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  display: flex;\n  margin: '10px';\n  background-color: #fff;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n  text-align: center;\n  font-size: 20px;\n  padding: 10px;\n  margin: 10px;\n  box-sizing: border-box;\n  max-width: 800px;\n"]);
+  var data = _taggedTemplateLiteral(["\n  display: flex;\n  margin: '10px';\n  background-color: #fff;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n  text-align: center;\n  font-size: 20px;\n  padding: 10px;\n  margin: 10px;\n  box-sizing: border-box;\n  /* max-width: 800px; */\n\n  @media (max-width: 768px) {\n    width: 100%;\n\n    a {\n      width: 100%;\n      img {\n        width: 100%;\n      }\n    }\n  }\n\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -55422,7 +55422,8 @@ var ImageDiv = _styledComponents.default.div(_templateObject3());
 
 var PhotoUpload = function PhotoUpload(_ref) {
   var _ref$socket = _ref.socket,
-      socket = _ref$socket === void 0 ? {} : _ref$socket;
+      socket = _ref$socket === void 0 ? {} : _ref$socket,
+      upload = _ref.upload;
 
   // const socket = useSocket();
   var _useState = (0, _react.useState)(''),
@@ -55510,7 +55511,7 @@ var PhotoUpload = function PhotoUpload(_ref) {
 
   return /*#__PURE__*/_react.default.createElement(Main, {
     className: "photo-upload"
-  }, /*#__PURE__*/_react.default.createElement("h1", null, "Hello ", title), /*#__PURE__*/_react.default.createElement("input", {
+  }, /*#__PURE__*/_react.default.createElement("h1", null, upload ? 'Upload Photos' : 'Photos'), upload && /*#__PURE__*/_react.default.createElement("input", {
     type: "file",
     id: "image_uploads",
     name: "image_uploads",
@@ -55531,7 +55532,640 @@ var PhotoUpload = function PhotoUpload(_ref) {
 
 var _default = PhotoUpload;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./photo-upload.scss":"components/photo-upload/photo-upload.scss","../../../helpers/fuji-exif":"../helpers/fuji-exif.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js"}],"app.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./photo-upload.scss":"components/photo-upload/photo-upload.scss","../../../helpers/fuji-exif":"../helpers/fuji-exif.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js"}],"../node_modules/fast-deep-equal/react.js":[function(require,module,exports) {
+'use strict';
+
+// do not edit .js files directly - edit src/index.jst
+
+
+
+module.exports = function equal(a, b) {
+  if (a === b) return true;
+
+  if (a && b && typeof a == 'object' && typeof b == 'object') {
+    if (a.constructor !== b.constructor) return false;
+
+    var length, i, keys;
+    if (Array.isArray(a)) {
+      length = a.length;
+      if (length != b.length) return false;
+      for (i = length; i-- !== 0;)
+        if (!equal(a[i], b[i])) return false;
+      return true;
+    }
+
+
+
+    if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
+    if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
+    if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
+
+    keys = Object.keys(a);
+    length = keys.length;
+    if (length !== Object.keys(b).length) return false;
+
+    for (i = length; i-- !== 0;)
+      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+
+    for (i = length; i-- !== 0;) {
+      var key = keys[i];
+
+      if (key === '_owner' && a.$$typeof) {
+        // React-specific: avoid traversing React elements' _owner.
+        //  _owner contains circular references
+        // and is not needed when comparing the actual elements (and not their owners)
+        continue;
+      }
+
+      if (!equal(a[key], b[key])) return false;
+    }
+
+    return true;
+  }
+
+  // true if both NaN, false otherwise
+  return a!==a && b!==b;
+};
+
+},{}],"../node_modules/react-use/lib/util.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isDeepEqual = exports.off = exports.on = exports.isClient = void 0;
+var tslib_1 = require("tslib");
+var react_1 = tslib_1.__importDefault(require("fast-deep-equal/react"));
+exports.isClient = typeof window === 'object';
+exports.on = function (obj) {
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    return obj.addEventListener.apply(obj, args);
+};
+exports.off = function (obj) {
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    return obj.removeEventListener.apply(obj, args);
+};
+exports.isDeepEqual = react_1.default;
+
+},{"tslib":"../node_modules/tslib/tslib.es6.js","fast-deep-equal/react":"../node_modules/fast-deep-equal/react.js"}],"../node_modules/react-use/lib/useLocation.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = require("react");
+var util_1 = require("./util");
+var patchHistoryMethod = function (method) {
+    var history = window.history;
+    var original = history[method];
+    history[method] = function (state) {
+        var result = original.apply(this, arguments);
+        var event = new Event(method.toLowerCase());
+        event.state = state;
+        window.dispatchEvent(event);
+        return result;
+    };
+};
+if (util_1.isClient) {
+    patchHistoryMethod('pushState');
+    patchHistoryMethod('replaceState');
+}
+var useLocationServer = function () { return ({
+    trigger: 'load',
+    length: 1,
+}); };
+var buildState = function (trigger) {
+    var _a = window.history, state = _a.state, length = _a.length;
+    var _b = window.location, hash = _b.hash, host = _b.host, hostname = _b.hostname, href = _b.href, origin = _b.origin, pathname = _b.pathname, port = _b.port, protocol = _b.protocol, search = _b.search;
+    return {
+        trigger: trigger,
+        state: state,
+        length: length,
+        hash: hash,
+        host: host,
+        hostname: hostname,
+        href: href,
+        origin: origin,
+        pathname: pathname,
+        port: port,
+        protocol: protocol,
+        search: search,
+    };
+};
+var useLocationBrowser = function () {
+    var _a = react_1.useState(buildState('load')), state = _a[0], setState = _a[1];
+    react_1.useEffect(function () {
+        var onPopstate = function () { return setState(buildState('popstate')); };
+        var onPushstate = function () { return setState(buildState('pushstate')); };
+        var onReplacestate = function () { return setState(buildState('replacestate')); };
+        util_1.on(window, 'popstate', onPopstate);
+        util_1.on(window, 'pushstate', onPushstate);
+        util_1.on(window, 'replacestate', onReplacestate);
+        return function () {
+            util_1.off(window, 'popstate', onPopstate);
+            util_1.off(window, 'pushstate', onPushstate);
+            util_1.off(window, 'replacestate', onReplacestate);
+        };
+    }, []);
+    return state;
+};
+var hasEventConstructor = typeof Event === 'function';
+exports.default = util_1.isClient && hasEventConstructor ? useLocationBrowser : useLocationServer;
+
+},{"react":"../node_modules/react/index.js","./util":"../node_modules/react-use/lib/util.js"}],"../node_modules/react-router-lite/lib/go.js":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var isClient = (typeof window === "undefined" ? "undefined" : _typeof(window)) === 'object';
+var go = isClient ? function (page, _a) {
+  var _b = _a === void 0 ? {} : _a,
+      replace = _b.replace,
+      title = _b.title,
+      state = _b.state;
+
+  history[replace ? 'replaceState' : 'pushState'](state, title || '', page);
+} : function () {};
+exports.default = go;
+},{}],"../node_modules/react-router-lite/lib/createRouter.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = require("react");
+
+var createRouter = function createRouter(_a) {
+  var Provider = _a.Provider;
+  return function (props) {
+    var route = props.route,
+        fullRoute = props.fullRoute,
+        parent = props.parent,
+        children = props.children;
+
+    if ("development" !== 'production') {
+      if (typeof route !== 'string') {
+        console.error('Router route must be a string.');
+      }
+    }
+
+    var value = {
+      fullRoute: fullRoute || route,
+      route: route,
+      parent: parent
+    };
+    return react_1.createElement(Provider, {
+      value: value
+    }, children);
+  };
+};
+
+exports.default = createRouter;
+},{"react":"../node_modules/react/index.js"}],"../node_modules/react-router-lite/lib/createMatcher.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function createMatcher(match, exact) {
+  if (typeof match === 'function') {
+    return match;
+  }
+
+  var regex = typeof match === 'string' ? new RegExp("^(" + match + (exact ? '$' : '') + ")") : match;
+  return function (route) {
+    return route.match(regex);
+  };
+}
+
+exports.default = createMatcher;
+},{}],"../node_modules/react-router-lite/lib/createUseMatch.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var tslib_1 = require("tslib");
+
+var react_1 = require("react");
+
+var createMatcher_1 = tslib_1.__importDefault(require("./createMatcher"));
+
+var createUseMatch = function createUseMatch(context) {
+  var useMatch = function useMatch(match, exact) {
+    if ("development" !== 'production') {
+      if (typeof match !== 'string') {
+        if (exact) {
+          console.warn('You are using useMatch(!string, true) with non-string match prop, ' + 'exact prop works only with string match prop.');
+        }
+      }
+    }
+
+    var _a = react_1.useContext(context),
+        fullRoute = _a.fullRoute,
+        route = _a.route,
+        parent = _a.parent;
+
+    var matches = createMatcher_1.default(match, exact)(route);
+    var data = {
+      fullRoute: fullRoute,
+      route: route,
+      parent: parent,
+      matches: matches
+    };
+    return data;
+  };
+
+  return useMatch;
+};
+
+exports.default = createUseMatch;
+},{"tslib":"../node_modules/tslib/tslib.es6.js","react":"../node_modules/react/index.js","./createMatcher":"../node_modules/react-router-lite/lib/createMatcher.js"}],"../node_modules/react-universal-interface/lib/render.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var tslib_1 = require("tslib");
+
+var react_1 = require("react");
+
+var isReact16Plus = parseInt(react_1.version.substr(0, react_1.version.indexOf('.'))) > 15;
+
+var isFn = function (fn) {
+  return typeof fn === 'function';
+};
+
+var render = function (props, data) {
+  var more = [];
+
+  for (var _i = 2; _i < arguments.length; _i++) {
+    more[_i - 2] = arguments[_i];
+  }
+
+  if ("development" !== 'production') {
+    if (typeof props !== 'object') {
+      throw new TypeError('renderChildren(props, data) first argument must be a props object.');
+    }
+
+    var children_1 = props.children,
+        render_1 = props.render;
+
+    if (isFn(children_1) && isFn(render_1)) {
+      console.warn('Both "render" and "children" are specified for in a universal interface component. ' + 'Children will be used.');
+      console.trace();
+    }
+
+    if (typeof data !== 'object') {
+      console.warn('Universal component interface normally expects data to be an object, ' + ("\"" + typeof data + "\" received."));
+      console.trace();
+    }
+  }
+
+  var render = props.render,
+      _a = props.children,
+      children = _a === void 0 ? render : _a,
+      component = props.component,
+      _b = props.comp,
+      comp = _b === void 0 ? component : _b;
+  if (isFn(children)) return children.apply(void 0, tslib_1.__spreadArrays([data], more));
+
+  if (comp) {
+    return react_1.createElement(comp, data);
+  }
+
+  if (children instanceof Array) return isReact16Plus ? children : react_1.createElement.apply(void 0, tslib_1.__spreadArrays(['div', null], children));
+
+  if (children && children instanceof Object) {
+    if ("development" !== 'production') {
+      if (!children.type || typeof children.type !== 'string' && typeof children.type !== 'function' && typeof children.type !== 'symbol') {
+        console.warn('Universal component interface received object as children, ' + 'expected React element, but received unexpected React "type".');
+        console.trace();
+      }
+
+      if (typeof children.type === 'string') return children;
+      return react_1.cloneElement(children, Object.assign({}, children.props, data));
+    } else {
+      if (typeof children.type === 'string') return children;
+      return react_1.cloneElement(children, Object.assign({}, children.props, data));
+    }
+  }
+
+  return children || null;
+};
+
+exports.default = render;
+},{"tslib":"../node_modules/tslib/tslib.es6.js","react":"../node_modules/react/index.js"}],"../node_modules/react-router-lite/lib/createMatch.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var tslib_1 = require("tslib");
+
+var react_1 = require("react");
+
+var render_1 = tslib_1.__importDefault(require("react-universal-interface/lib/render"));
+
+var createMatch = function createMatch(useMatch, Router) {
+  var Match = function Match(props) {
+    var match = props.match,
+        exact = props.exact,
+        truncate = props.truncate;
+    var data = useMatch(match, exact);
+    var route = data.route,
+        matches = data.matches;
+    var element = render_1.default(props, data);
+
+    if (matches && truncate) {
+      element = react_1.createElement(Router, {
+        fullRoute: route,
+        route: route.substring(matches[0].length),
+        parent: data,
+        children: element
+      });
+    }
+
+    return element;
+  };
+
+  return Match;
+};
+
+exports.default = createMatch;
+},{"tslib":"../node_modules/tslib/tslib.es6.js","react":"../node_modules/react/index.js","react-universal-interface/lib/render":"../node_modules/react-universal-interface/lib/render.js"}],"../node_modules/react-router-lite/lib/createRoute.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var tslib_1 = require("tslib");
+
+var react_1 = require("react");
+
+var render_1 = tslib_1.__importDefault(require("react-universal-interface/lib/render"));
+
+var createRoute = function createRoute(Match) {
+  return function (props) {
+    return react_1.createElement(Match, props, function (data) {
+      return data.matches ? render_1.default(props, data) : null;
+    });
+  };
+};
+
+exports.default = createRoute;
+},{"tslib":"../node_modules/tslib/tslib.es6.js","react":"../node_modules/react/index.js","react-universal-interface/lib/render":"../node_modules/react-universal-interface/lib/render.js"}],"../node_modules/react-router-lite/lib/createSwitch.js":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var tslib_1 = require("tslib");
+
+var react_1 = require("react");
+
+var createMatcher_1 = tslib_1.__importDefault(require("./createMatcher"));
+
+var createSwitch = function createSwitch(context, Route) {
+  var Switch = function Switch(_a) {
+    var children = _a.children;
+    var route = react_1.useContext(context).route;
+    var elements = react_1.Children.toArray(children);
+
+    for (var _i = 0, elements_1 = elements; _i < elements_1.length; _i++) {
+      var element = elements_1[_i];
+
+      if ("development" !== 'production') {
+        if (_typeof(element) !== 'object' || element.type !== Route) {
+          throw new TypeError('All <Switch> children must be <Route> elements.');
+        }
+      }
+
+      var _b = element.props,
+          match = _b.match,
+          exact = _b.exact;
+      if (createMatcher_1.default(match, exact)(route)) return element;
+    }
+
+    return null;
+  };
+
+  return Switch;
+};
+
+exports.default = createSwitch;
+},{"tslib":"../node_modules/tslib/tslib.es6.js","react":"../node_modules/react/index.js","./createMatcher":"../node_modules/react-router-lite/lib/createMatcher.js"}],"../node_modules/react-router-lite/lib/createLink.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var tslib_1 = require("tslib");
+
+var react_1 = require("react");
+
+var noop = function noop() {};
+
+var isModifiedEvent = function isModifiedEvent(event) {
+  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+};
+
+var createLink = function createLink(go) {
+  var Link = react_1.forwardRef(function (props, ref) {
+    var replace = props.replace,
+        state = props.state,
+        _a = props.to,
+        to = _a === void 0 ? '' : _a,
+        a = props.a,
+        _b = props.component,
+        component = _b === void 0 ? a ? 'a' : 'button' : _b,
+        _c = props.onClick,
+        originalClick = _c === void 0 ? noop : _c,
+        target = props.target,
+        rest = tslib_1.__rest(props, ["replace", "state", "to", "a", "component", "onClick", "target"]);
+
+    var onClick = react_1.useCallback(function (event) {
+      if (!event.defaultPrevented && event.button === 0 && !target && !isModifiedEvent(event)) {
+        event.preventDefault();
+        go(to, {
+          replace: replace,
+          state: state ? state(props) : undefined
+        });
+        originalClick(event);
+      }
+    }, [originalClick, replace, target, state]);
+
+    var attr = tslib_1.__assign(tslib_1.__assign({}, rest), {
+      ref: ref,
+      onClick: onClick
+    });
+
+    if (component === 'a') {
+      attr.href = to;
+      attr.target = target;
+    }
+
+    return react_1.createElement(component, attr);
+  });
+  return Link;
+};
+
+exports.default = createLink;
+},{"tslib":"../node_modules/tslib/tslib.es6.js","react":"../node_modules/react/index.js"}],"../node_modules/react-router-lite/lib/createRedirect.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = require("react");
+
+var isBrowser = typeof window !== 'undefined';
+var useIsomorphicLayoutEffect = isBrowser ? react_1.useLayoutEffect : react_1.useEffect;
+
+var createRedirect = function createRedirect(go) {
+  var Redirect = function Redirect(_a) {
+    var to = _a.to,
+        replace = _a.replace,
+        state = _a.state,
+        title = _a.title,
+        children = _a.children;
+    useIsomorphicLayoutEffect(function () {
+      go(to, {
+        replace: replace,
+        state: state,
+        title: title
+      });
+    }, []);
+    return children ? react_1.createElement(react_1.Fragment, {}, children) : null;
+  };
+
+  return Redirect;
+};
+
+exports.default = createRedirect;
+},{"react":"../node_modules/react/index.js"}],"../node_modules/react-router-lite/lib/create.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var tslib_1 = require("tslib");
+
+var react_1 = require("react");
+
+var go_1 = tslib_1.__importDefault(require("./go"));
+
+var createRouter_1 = tslib_1.__importDefault(require("./createRouter"));
+
+var createUseMatch_1 = tslib_1.__importDefault(require("./createUseMatch"));
+
+var createMatch_1 = tslib_1.__importDefault(require("./createMatch"));
+
+var createRoute_1 = tslib_1.__importDefault(require("./createRoute"));
+
+var createSwitch_1 = tslib_1.__importDefault(require("./createSwitch"));
+
+var createLink_1 = tslib_1.__importDefault(require("./createLink"));
+
+var createRedirect_1 = tslib_1.__importDefault(require("./createRedirect"));
+
+var create = function create(go, data) {
+  if (go === void 0) {
+    go = go_1.default;
+  }
+
+  if (data === void 0) {
+    data = {
+      fullRoute: '',
+      route: ''
+    };
+  }
+
+  var context = react_1.createContext(data);
+  var Router = createRouter_1.default(context);
+  var useMatch = createUseMatch_1.default(context);
+  var Match = createMatch_1.default(useMatch, Router);
+  var Route = createRoute_1.default(Match);
+  var Switch = createSwitch_1.default(context, Route);
+  var Link = createLink_1.default(go);
+  var Redirect = createRedirect_1.default(go);
+  return {
+    go: go,
+    context: context,
+    Router: Router,
+    useMatch: useMatch,
+    Match: Match,
+    Route: Route,
+    Switch: Switch,
+    Link: Link,
+    Redirect: Redirect
+  };
+};
+
+exports.default = create;
+},{"tslib":"../node_modules/tslib/tslib.es6.js","react":"../node_modules/react/index.js","./go":"../node_modules/react-router-lite/lib/go.js","./createRouter":"../node_modules/react-router-lite/lib/createRouter.js","./createUseMatch":"../node_modules/react-router-lite/lib/createUseMatch.js","./createMatch":"../node_modules/react-router-lite/lib/createMatch.js","./createRoute":"../node_modules/react-router-lite/lib/createRoute.js","./createSwitch":"../node_modules/react-router-lite/lib/createSwitch.js","./createLink":"../node_modules/react-router-lite/lib/createLink.js","./createRedirect":"../node_modules/react-router-lite/lib/createRedirect.js"}],"../node_modules/react-router-lite/lib/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Redirect = exports.Switch = exports.Link = exports.useMatch = exports.Router = exports.Route = exports.Match = exports.go = exports.context = exports.Provider = void 0;
+
+var tslib_1 = require("tslib");
+
+var react_1 = require("react");
+
+var useLocation_1 = tslib_1.__importDefault(require("react-use/lib/useLocation"));
+
+var create_1 = tslib_1.__importDefault(require("./create"));
+
+var _a = create_1.default(),
+    context = _a.context,
+    go = _a.go,
+    Match = _a.Match,
+    Route = _a.Route,
+    Router = _a.Router,
+    useMatch = _a.useMatch,
+    Link = _a.Link,
+    Switch = _a.Switch,
+    Redirect = _a.Redirect;
+
+exports.context = context;
+exports.go = go;
+exports.Match = Match;
+exports.Route = Route;
+exports.Router = Router;
+exports.useMatch = useMatch;
+exports.Link = Link;
+exports.Switch = Switch;
+exports.Redirect = Redirect;
+
+var Provider = function Provider(_a) {
+  var route = _a.route,
+      children = _a.children;
+  return react_1.createElement(Router, {
+    route: useLocation_1.default().pathname || route || '',
+    children: children
+  });
+};
+
+exports.Provider = Provider;
+},{"tslib":"../node_modules/tslib/tslib.es6.js","react":"../node_modules/react/index.js","react-use/lib/useLocation":"../node_modules/react-use/lib/useLocation.js","./create":"../node_modules/react-router-lite/lib/create.js"}],"app.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -55675,6 +56309,8 @@ var _config = _interopRequireDefault(require("./config"));
 
 var _photoUpload = _interopRequireDefault(require("./components/photo-upload/photo-upload.js"));
 
+var _reactRouterLite = require("react-router-lite");
+
 require("./app.scss");
 
 var _dice = _interopRequireDefault(require("./dice"));
@@ -55714,6 +56350,9 @@ function App(_ref) {
       });
     });
   }, []);
+  var isUpload = (0, _react.useMemo)(function () {
+    return window.location.pathname === '/upload';
+  }, []);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "app"
   }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("span", {
@@ -55721,12 +56360,13 @@ function App(_ref) {
   }, connectionDetails.status), " with connection ID ", /*#__PURE__*/_react.default.createElement("span", {
     className: "id"
   }, connectionId)), /*#__PURE__*/_react.default.createElement(_photoUpload.default, {
+    upload: isUpload,
     socket: socket
   }));
 }
 
 module.exports = App;
-},{"react":"../node_modules/react/index.js","./config":"config.js","./components/photo-upload/photo-upload.js":"components/photo-upload/photo-upload.js","./app.scss":"app.scss","./dice":"dice.js"}],"index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./config":"config.js","./components/photo-upload/photo-upload.js":"components/photo-upload/photo-upload.js","react-router-lite":"../node_modules/react-router-lite/lib/index.js","./app.scss":"app.scss","./dice":"dice.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("babel-polyfill");
@@ -55800,7 +56440,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54676" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49530" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
